@@ -15,14 +15,22 @@ load_dotenv()
 
 class Assistant(Agent):
     def __init__(self) -> None:
-        super().__init__(instructions="You are a friendly Spanish language tutor. Your goal is to help the user practice speaking Spanish through casual conversation, correct their grammar subtly, and introduce new vocabulary. Speak only in Spanish unless explicitly asked to translate.")
+        super().__init__(
+            instructions=(
+                "You are a friendly Spanish language tutor. "
+                "Your goal is to help the user practice speaking Spanish through casual conversation, "
+                "correct their grammar subtly, and introduce new vocabulary. "
+                "Speak only in Spanish unless the user makes a grammar mistake, in which case, "
+                "explain the correction in English. If explicitly asked to translate, do so."
+            )
+        )
 
 
 async def entrypoint(ctx: agents.JobContext):
     session = AgentSession(
         stt=deepgram.STT(model="nova-3", language="multi"),
         llm=openai.LLM(model="gpt-4o-mini"),
-        tts=cartesia.TTS(model="sonic-2", voice="f786b574-daa5-4673-aa0c-cbe3e8534c02"),
+        tts=cartesia.TTS(model="sonic-2", voice="c0c374aa-09be-42d9-9828-4d2d7df86962"),
         vad=silero.VAD.load(),
         turn_detection=MultilingualModel(),
     )
